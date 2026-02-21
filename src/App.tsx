@@ -3,10 +3,15 @@ import { useState } from "react"
 function App() {
     const [beforeText, setBeforeText] = useState("");
     const [afterText, setAfterText] = useState("");
+    const [diferenca, setDiferenca] = useState<number | null>(null)
 
   const countWords = (text :string): number => {
     const trimmed = text.trim();
     return trimmed === "" ? 0 : trimmed.split(/\s+/).length;
+  }
+  const ResultadoDaDiferenca = () => { 
+    const gap = countWords(beforeText) - countWords(afterText)
+    setDiferenca(gap)
   }
 
   return (
@@ -29,6 +34,15 @@ function App() {
         onChange={(e) => setAfterText(e.target.value)}
         />
         <p>palavras: {countWords(afterText)}</p>
+      </div>
+      <div>
+        <button onClick={ResultadoDaDiferenca}>
+        {diferenca === null ? (
+            "Calcular a diferença"
+          ) : (
+            diferenca
+          )}
+        </button>
       </div>
     </div>
   )
