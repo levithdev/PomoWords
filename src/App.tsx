@@ -3,6 +3,7 @@ type pomo = {
   name: string,
   beforeText: string,
   afterText: string,
+  wordGap: number,
   time: number
 }
 
@@ -11,19 +12,23 @@ function App() {
   const [afterText, setAfterText] = useState("");
   const [difference, setDifference] = useState<number | null>(null);
   const [pomoList, setPomoList] = useState<pomo[]>([])
+  
 
   const countWords = (text: string): number => {
     const trimmed = text.trim();
     return trimmed === "" ? 0 : trimmed.split(/\s+/).length;
   };
   const savePomo = () => {
-   const numberName = pomoList.length + 1; 
+    const gap = countWords(beforeText) - countWords(afterText);
+    const numberName = pomoList.length + 1; 
+    
     const newPomo: pomo = { 
-    name: "Session" + numberName,
-    beforeText,
-    afterText, 
-    time: Date.now()
-   }; 
+      name: "Session" + numberName,
+      beforeText,
+      afterText, 
+      wordGap: gap,
+      time: Date.now()
+    }; 
    setPomoList((prev) => [...prev, newPomo])
   }
 
