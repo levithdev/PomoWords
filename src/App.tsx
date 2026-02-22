@@ -12,7 +12,7 @@ function App() {
   const [afterText, setAfterText] = useState("");
   const [difference, setDifference] = useState<number | null>(null);
   const [pomoList, setPomoList] = useState<pomo[]>([])
-  
+
 
   const countWords = (text: string): number => {
     const trimmed = text.trim();
@@ -71,6 +71,31 @@ function App() {
             difference
           )}
         </button>
+      </div>
+      <div>
+        <div>
+          <ul>
+            {pomoList.map((pomo) => (
+              <li key={pomo.time}>
+                  <h3>{pomo.name}</h3>
+                  <div>
+                    <p>Before: {countWords(pomo.beforeText)}</p>
+                    <p>After: {countWords(pomo.afterText)}</p>
+                    <p>Gap: {pomo.wordGap}</p>
+                  </div>
+                  <p>
+                    {new Date(pomo.time).toLocaleDateString("pt-BR", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric", 
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+              </li>
+           ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
