@@ -1,14 +1,31 @@
 import { useState } from "react"
+type pomo = {
+  name: string,
+  beforeText: string,
+  afterText: string,
+  time: number
+}
 
 function App() {
   const [beforeText, setBeforeText] = useState("");
   const [afterText, setAfterText] = useState("");
   const [difference, setDifference] = useState<number | null>(null);
+  const [pomoList, setPomoList] = useState<pomo[]>([])
 
   const countWords = (text: string): number => {
     const trimmed = text.trim();
     return trimmed === "" ? 0 : trimmed.split(/\s+/).length;
   };
+  const savePomo = () => {
+   const numberName = pomoList.length + 1; 
+    const newPomo: pomo = { 
+    name: "Session" + numberName,
+    beforeText,
+    afterText, 
+    time: Date.now()
+   }; 
+   setPomoList((prev) => [...prev, newPomo])
+  }
 
   const calculateDifference = () => { 
     const gap = countWords(beforeText) - countWords(afterText);
@@ -39,7 +56,10 @@ function App() {
       </div>
 
       <div>
-        <button onClick={calculateDifference}>
+        <button onClick={() => {
+          calculateDifference()
+          savePomo()
+        }}>
           {difference === null ? (
             "Calculate difference"
           ) : (
