@@ -47,7 +47,7 @@ function App() {
     setDifference(gap);
   };
 
-  const Deletehistory = () => {
+  const deleteHistory = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this session?")
 
     if (confirmDelete) {
@@ -113,6 +113,11 @@ function App() {
               </li>
            ))}
           </ul>
+        </div>
+        <div>
+           { pomoList.length !== 0} (
+            <button onClick={deleteHistory}>Clear History</button>
+           ) 
         </div>
       </div>
     </div>
