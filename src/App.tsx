@@ -11,6 +11,8 @@ function App() {
   const [beforeText, setBeforeText] = useState("");
   const [afterText, setAfterText] = useState("");
   const [difference, setDifference] = useState<number | null>(null);
+  const [editingTime, setEditingTime] = useState<number |null>(null)
+  const [newName, setNewName] = useState("")
   const [pomoList, setPomoList] = useState<Pomo[]>(() => {
     try {
     const saved = localStorage.getItem("memory");
@@ -49,6 +51,17 @@ function App() {
   const deleteSession = (time: number) => {
     setPomoList(prev => prev.filter(p => p.time !== time ))
   };
+  const taskInEdit = (time: number) => {
+    setEditingTime(time) 
+  }
+  const rename = (time: number) => { 
+    setPomoList(prev =>
+       prev.map(pomo => 
+        pomo.time === time 
+        ? {...pomo, name: newName}
+        : pomo 
+    ))
+  }
 
   const deleteHistory = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this session?")
@@ -57,7 +70,14 @@ function App() {
       setPomoList([]) //delete 
     }
   }
-
+  const handleEnter = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    acao: () => void
+  ) => {
+    if (event.key === "Enter") {
+      acao()
+    }
+  }
   return (
     <div>
       <div>
@@ -98,7 +118,23 @@ function App() {
           <ul>
             {pomoList.map((pomo) => (
               <li key={pomo.time}>
-                  <h3>{pomo.name}</h3>
+                  {editingTime === pomo.time ? (
+                    <input 
+                    type="text"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}  
+                    onKeyDown={(e) => 
+                      handleEnter(e, () => {
+                        rename(pomo.time)
+                        setEditingTime(null)
+                        setNewName("")
+                      })
+                    }
+                    />
+                  ) : ( 
+                    <h3 onClick={() => taskInEdit(pomo.time)}> {pomo.name}</h3>
+                  )}
+                  
                   <div>
                     <p>Before: {countWords(pomo.beforeText)}</p>
                     <p>After: {countWords(pomo.afterText)}</p>
