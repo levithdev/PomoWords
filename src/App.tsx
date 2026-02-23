@@ -29,7 +29,7 @@ function App() {
     return trimmed === "" ? 0 : trimmed.split(/\s+/).length;
   };
   const savePomo = () => {
-    const gap = countWords(beforeText) - countWords(afterText);
+    const gap = countWords(afterText) - countWords(beforeText);
     const numberName = pomoList.length + 1; 
     
     const newPomo: Pomo = { 
@@ -45,6 +45,9 @@ function App() {
   const calculateDifference = () => { 
     const gap = countWords(afterText) - countWords(beforeText);
     setDifference(gap);
+  };
+  const deleteSession = (time: number) => {
+    setPomoList(prev => prev.filter(p => p.time !== time ))
   };
 
   const deleteHistory = () => {
@@ -110,6 +113,9 @@ function App() {
                       minute: "2-digit",
                     })}
                   </p>
+                  <button onClick={() => deleteSession(pomo.time)}>
+                    delete
+                  </button>
               </li>
            ))}
           </ul>
