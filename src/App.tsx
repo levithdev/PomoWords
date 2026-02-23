@@ -1,5 +1,5 @@
-import { useState } from "react"
-type pomo = {
+import { useEffect, useState } from "react"
+type Pomo = {
   name: string,
   beforeText: string,
   afterText: string,
@@ -11,8 +11,18 @@ function App() {
   const [beforeText, setBeforeText] = useState("");
   const [afterText, setAfterText] = useState("");
   const [difference, setDifference] = useState<number | null>(null);
-  const [pomoList, setPomoList] = useState<pomo[]>([])
+  const [pomoList, setPomoList] = useState<Pomo[]>(() => {
+    try {
+    const saved = localStorage.getItem("memory");
+    return saved ? (JSON.parse(saved) as Pomo[]) : []; 
+   } catch {
+    return []
+   }
+  })
 
+  useEffect(() => {
+    localStorage.setItem("memory", JSON.stringify(pomoList))
+  }, [pomoList])
 
   const countWords = (text: string): number => {
     const trimmed = text.trim();
@@ -22,7 +32,7 @@ function App() {
     const gap = countWords(beforeText) - countWords(afterText);
     const numberName = pomoList.length + 1; 
     
-    const newPomo: pomo = { 
+    const newPomo: Pomo = { 
       name: "Session" + numberName,
       beforeText,
       afterText, 
