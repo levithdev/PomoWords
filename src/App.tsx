@@ -47,6 +47,14 @@ function App() {
     setDifference(gap);
   };
 
+  const Deletehistory = () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this session?")
+
+    if (confirmDelete) {
+      setPomoList([]) //delete 
+    }
+  }
+
   return (
     <div>
       <div>
