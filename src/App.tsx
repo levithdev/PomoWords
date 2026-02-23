@@ -115,9 +115,9 @@ function App() {
           </ul>
         </div>
         <div>
-           { pomoList.length !== 0} (
+           { pomoList.length !== 0 && (
             <button onClick={deleteHistory}>Clear History</button>
-           ) 
+           ) }
         </div>
       </div>
     </div>
