@@ -43,7 +43,7 @@ function App() {
   }
 
   const calculateDifference = () => { 
-    const gap = countWords(beforeText) - countWords(afterText);
+    const gap = countWords(afterText) - countWords(beforeText);
     setDifference(gap);
   };
 
