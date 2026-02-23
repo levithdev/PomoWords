@@ -13,6 +13,7 @@ function App() {
   const [difference, setDifference] = useState<number | null>(null);
   const [editingTime, setEditingTime] = useState<number |null>(null)
   const [newName, setNewName] = useState("")
+  const [totalGap, setTodtalGap] = useState<number |null>(null)
   const [pomoList, setPomoList] = useState<Pomo[]>(() => {
     try {
     const saved = localStorage.getItem("memory");
@@ -24,6 +25,10 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("memory", JSON.stringify(pomoList))
+  }, [pomoList])
+  useEffect(() => {
+    const gap = pomoList.reduce((acc, pomo) => acc + pomo.wordGap, 0 );
+    setTodtalGap(gap); 
   }, [pomoList])
 
   const countWords = (text: string): number => {
@@ -72,10 +77,10 @@ function App() {
   }
   const handleEnter = (
     event: React.KeyboardEvent<HTMLInputElement>,
-    acao: () => void
+    callback: () => void
   ) => {
     if (event.key === "Enter") {
-      acao()
+      callback()
     }
   }
   return (
@@ -160,6 +165,9 @@ function App() {
            { pomoList.length !== 0 && (
             <button onClick={deleteHistory}>Clear History</button>
            ) }
+        </div>
+        <div>
+          <p>{totalGap}</p>
         </div>
       </div>
     </div>
