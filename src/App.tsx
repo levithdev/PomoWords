@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import {InputPomodoro } from "./components/InputPomodoro"
+import {ButtonCalculateDiferrence} from "./components/ButtonCalculeteDiferrence"
 
 type Pomo = {
   name: string,
@@ -172,6 +173,11 @@ function App() {
       </div>
 
       <div>
+        <ButtonCalculateDiferrence 
+          onCalculateDifference={calculateDifference}
+          onPomoVerification={pomoVerification}
+          difference={difference}
+        /> 
         <button onClick={() => {
           calculateDifference()
           pomoVerification() 
@@ -185,6 +191,7 @@ function App() {
       </div>
       <div>
         <div>
+
           <ul>
             {pomoList.map((pomo) => (
               <li key={pomo.time}>

@@ -4,8 +4,6 @@ interface InputPomodoroProps {
 }
 
 export function InputPomodoro({text, onChange}: InputPomodoroProps ) {
-
-
     return (
         <div>
             <input
