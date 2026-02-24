@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import {InputPomodoro } from "./components/InputPomodoro"
+
 type Pomo = {
   name: string,
   beforeText: string,
@@ -146,24 +148,27 @@ function App() {
   return (
     <div>
       <div>
-        <input
-          type="text"
-          value={beforeText}
-          onChange={(e) => setBeforeText(e.target.value)}
-        />
-
+        <div>
+          <InputPomodoro 
+            text={beforeText}
+            onChange={setBeforeText} 
+          / >
+        </div>
         <div>
           <p>Words: {countWords(beforeText)}</p>
         </div>
       </div>
 
       <div>
-        <input 
-          type="text"
-          value={afterText}
-          onChange={(e) => setAfterText(e.target.value)}
-        />
-        <p>Words: {countWords(afterText)}</p>
+        <div>
+          <InputPomodoro
+            text={afterText}
+            onChange={setAfterText}
+          />
+        </div>
+        <div>
+          <p>Words: {countWords(afterText)}</p>
+        </div>
       </div>
 
       <div>
