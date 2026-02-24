@@ -13,7 +13,7 @@ function App() {
   const [difference, setDifference] = useState<number | null>(null);
   const [editingTime, setEditingTime] = useState<number |null>(null)
   const [newName, setNewName] = useState("")
-  const [totalGap, setTodtalGap] = useState<number |null>(null)
+  const [totalGap, setTotalGap] = useState<number |null>(null)
   const [pomoList, setPomoList] = useState<Pomo[]>(() => {
     try {
     const saved = localStorage.getItem("memory");
@@ -28,7 +28,7 @@ function App() {
   }, [pomoList])
   useEffect(() => {
     const gap = pomoList.reduce((acc, pomo) => acc + pomo.wordGap, 0 );
-    setTodtalGap(gap); 
+    setTotalGap(gap); 
   }, [pomoList])
 
   const countWords = (text: string): number => {
@@ -40,13 +40,30 @@ function App() {
     const numberName = pomoList.length + 1; 
     
     const newPomo: Pomo = { 
-      name: "Session" + numberName,
+      name: "Session " + numberName,
       beforeText,
       afterText, 
       wordGap: gap,
       time: Date.now()
     }; 
    setPomoList((prev) => [...prev, newPomo])
+  }
+
+  const pomoVerification = () => {
+    if (pomoList.length === 0) {
+      savePomo()
+      return
+    }
+
+    const lastPomo = pomoList[pomoList.length - 1];
+
+   const isEqual =
+    beforeText === lastPomo.beforeText &&
+    afterText === lastPomo.afterText;
+
+  if (isEqual) return;
+
+  savePomo();
   }
 
   const calculateDifference = () => { 
@@ -109,7 +126,7 @@ function App() {
       <div>
         <button onClick={() => {
           calculateDifference()
-          savePomo()
+          pomoVerification() 
         }}>
           {difference === null ? (
             "Calculate difference"
