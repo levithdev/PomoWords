@@ -1,42 +1,37 @@
 import { useEffect, useState } from "react"
-import {InputPomodoro } from "./components/InputPomodoro"
-import {ButtonCalculateDiferrence} from "./components/ButtonCalculeteDiferrence"
+import { InputPomodoro } from "./components/InputPomodoro"
+import { ButtonCalculateDiferrence } from "./components/ButtonCalculeteDiferrence"
+import { SessionList } from "./components/SessionList"
+import type { Pomo } from "./types/Pomo"
 
-type Pomo = {
-  name: string,
-  beforeText: string,
-  afterText: string,
-  wordGap: number,
-  time: number
-}
 
 function App() {
   const [beforeText, setBeforeText] = useState("");
   const [afterText, setAfterText] = useState("");
   const [difference, setDifference] = useState<number | null>(null);
-  const [editingTime, setEditingTime] = useState<number |null>(null)
-  const [newName, setNewName] = useState("")
-  const [totalGap, setTotalGap] = useState<number |null>(null)
+  const [editingTime, setEditingTime] = useState<number | null>(null)
+  const [newName, setNewName] = useState("");
+  const [totalGap, setTotalGap] = useState<number | null>(null);
   const [pomoList, setPomoList] = useState<Pomo[]>(() => {
     try {
-    const saved = localStorage.getItem("memory");
-    return saved ? (JSON.parse(saved) as Pomo[]) : []; 
-   } catch {
-    return []
-   }
-  })
+      const saved = localStorage.getItem("memory");
+      return saved ? (JSON.parse(saved) as Pomo[]) : [];
+    } catch {
+      return []
+    }
+  });
 
   useEffect(() => {
     localStorage.setItem("memory", JSON.stringify(pomoList))
   }, [pomoList])
   useEffect(() => {
-    const gap = pomoList.reduce((acc, pomo) => acc + pomo.wordGap, 0 );
-    setTotalGap(gap); 
+    const gap = pomoList.reduce((acc, pomo) => acc + pomo.wordGap, 0);
+    setTotalGap(gap);
   }, [pomoList])
 
   const exportJSON = () => {
     const jsonString = JSON.stringify(pomoList, null, 2);
-    const blob = new Blob([jsonString], {type: "application/json"}); 
+    const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement("a");
@@ -83,16 +78,16 @@ function App() {
   };
   const savePomo = () => {
     const gap = countWords(afterText) - countWords(beforeText);
-    const numberName = pomoList.length + 1; 
-    
-    const newPomo: Pomo = { 
+    const numberName = pomoList.length + 1;
+
+    const newPomo: Pomo = {
       name: "Session " + numberName,
       beforeText,
-      afterText, 
+      afterText,
       wordGap: gap,
       time: Date.now()
-    }; 
-   setPomoList((prev) => [...prev, newPomo])
+    };
+    setPomoList((prev) => [...prev, newPomo])
   }
 
   const pomoVerification = () => {
@@ -103,32 +98,32 @@ function App() {
 
     const lastPomo = pomoList[pomoList.length - 1];
 
-   const isEqual =
-    beforeText === lastPomo.beforeText &&
-    afterText === lastPomo.afterText;
+    const isEqual =
+      beforeText === lastPomo.beforeText &&
+      afterText === lastPomo.afterText;
 
-  if (isEqual) return;
+    if (isEqual) return;
 
-  savePomo();
+    savePomo();
   }
 
-  const calculateDifference = () => { 
+  const calculateDifference = () => {
     const gap = countWords(afterText) - countWords(beforeText);
     setDifference(gap);
   };
   const deleteSession = (time: number) => {
-    setPomoList(prev => prev.filter(p => p.time !== time ))
+    setPomoList(prev => prev.filter(p => p.time !== time))
   };
   const taskInEdit = (time: number) => {
-    setEditingTime(time) 
+    setEditingTime(time)
   }
-  const rename = (time: number) => { 
+  const rename = (time: number) => {
     setPomoList(prev =>
-       prev.map(pomo => 
-        pomo.time === time 
-        ? {...pomo, name: newName}
-        : pomo 
-    ))
+      prev.map(pomo =>
+        pomo.time === time
+          ? { ...pomo, name: newName }
+          : pomo
+      ))
   }
 
   const deleteHistory = () => {
@@ -150,10 +145,10 @@ function App() {
     <div>
       <div>
         <div>
-          <InputPomodoro 
+          <InputPomodoro
             text={beforeText}
-            onChange={setBeforeText} 
-          / >
+            onChange={setBeforeText}
+          />
         </div>
         <div>
           <p>Words: {countWords(beforeText)}</p>
@@ -173,70 +168,35 @@ function App() {
       </div>
 
       <div>
-        <ButtonCalculateDiferrence 
+        <ButtonCalculateDiferrence
           onCalculateDifference={calculateDifference}
           onPomoVerification={pomoVerification}
           difference={difference}
-        /> 
-        <button onClick={() => {
-          calculateDifference()
-          pomoVerification() 
-        }}>
-          {difference === null ? (
-            "Calculate difference"
-          ) : (
-            difference
-          )}
-        </button>
+        />
       </div>
       <div>
         <div>
-
-          <ul>
-            {pomoList.map((pomo) => (
-              <li key={pomo.time}>
-                  {editingTime === pomo.time ? (
-                    <input 
-                    type="text"
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}  
-                    onKeyDown={(e) => 
-                      handleEnter(e, () => {
-                        rename(pomo.time)
-                        setEditingTime(null)
-                        setNewName("")
-                      })
-                    }
-                    />
-                  ) : ( 
-                    <h3 onClick={() => taskInEdit(pomo.time)}> {pomo.name}</h3>
-                  )}
-                  
-                  <div>
-                    <p>Before: {countWords(pomo.beforeText)}</p>
-                    <p>After: {countWords(pomo.afterText)}</p>
-                    <p>Gap: {pomo.wordGap}</p>
-                  </div>
-                  <p>
-                    {new Date(pomo.time).toLocaleDateString("pt-BR", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric", 
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                  <button onClick={() => deleteSession(pomo.time)}>
-                    delete
-                  </button>
-              </li>
-           ))}
-          </ul>
+          <SessionList
+            data={{
+              pomoList,
+              editingTime,
+              newName
+            }}
+            actions={{
+              setNewName,
+              deleteSession,
+              rename,
+              taskInEdit,
+              setEditingTime,
+              handleEnter,
+              countWords
+            }}
+          />
         </div>
         <div>
-           { pomoList.length !== 0 && (
+          {pomoList.length !== 0 && (
             <button onClick={deleteHistory}>Clear History</button>
-           ) }
+          )}
         </div>
         <div>
           <p>{totalGap}</p>
@@ -245,9 +205,9 @@ function App() {
       <div>
         <div>
           <button
-          onClick={exportJSON}
+            onClick={exportJSON}
           >
-          Export JSON 
+            Export JSON
           </button>
         </div>
         <div>
