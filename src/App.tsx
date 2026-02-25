@@ -3,6 +3,7 @@ import { InputPomodoro } from "./components/InputPomodoro"
 import { ButtonCalculateDiferrence } from "./components/ButtonCalculeteDiferrence"
 import { SessionList } from "./components/SessionList"
 import type { Pomo } from "./types/Pomo"
+import { StatsOverview } from "./components/StatsOverview"
 
 
 function App() {
@@ -194,13 +195,24 @@ function App() {
           />
         </div>
         <div>
+          <StatsOverview
+            data={{
+              pomoList,
+              totalGap
+            }}
+            actions={{
+              deleteHistory
+            }}
+          />
+        </div>
+        {/* <div>
           {pomoList.length !== 0 && (
             <button onClick={deleteHistory}>Clear History</button>
           )}
         </div>
         <div>
           <p>{totalGap}</p>
-        </div>
+        </div> */}
       </div>
       <div>
         <div>
