@@ -4,7 +4,7 @@ import { ButtonCalculateDiferrence } from "./components/ButtonCalculeteDiferrenc
 import { SessionList } from "./components/SessionList"
 import type { Pomo } from "./types/Pomo"
 import { StatsOverview } from "./components/StatsOverview"
-
+import { ImportExportJson } from "./components/ImportExportJson"
 
 function App() {
   const [beforeText, setBeforeText] = useState("");
@@ -205,30 +205,14 @@ function App() {
             }}
           />
         </div>
-        {/* <div>
-          {pomoList.length !== 0 && (
-            <button onClick={deleteHistory}>Clear History</button>
-          )}
-        </div>
-        <div>
-          <p>{totalGap}</p>
-        </div> */}
       </div>
       <div>
-        <div>
-          <button
-            onClick={exportJSON}
-          >
-            Export JSON
-          </button>
-        </div>
-        <div>
-          <input
-            type="file"
-            accept="application/json"
-            onChange={importJSON}
-          />
-        </div>
+        <ImportExportJson
+          actions={{
+            exportJSON,
+            importJSON
+          }}
+        />
       </div>
     </div>
   );
