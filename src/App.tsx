@@ -13,6 +13,7 @@ function App() {
   const [editingTime, setEditingTime] = useState<number | null>(null)
   const [newName, setNewName] = useState("");
   const [totalGap, setTotalGap] = useState<number | null>(null);
+  const [averageWordGap, setAverageWordGap] = useState<number | null>(null);
   const [pomoList, setPomoList] = useState<Pomo[]>(() => {
     try {
       const saved = localStorage.getItem("memory");
@@ -106,6 +107,18 @@ function App() {
     if (isEqual) return;
 
     savePomo();
+  }
+
+  const calculateAverageGap = () => {
+    let average = 0;
+    pomoList.map((item) => {
+      average = average + item.wordGap
+    })
+    if (pomoList.length === 0) return
+
+    average = average / pomoList.length
+    average = Number(average.toFixed(1))
+    setAverageWordGap(average)
   }
 
   const calculateDifference = () => {
@@ -213,6 +226,14 @@ function App() {
             importJSON
           }}
         />
+      </div>
+      <div>
+        <button
+          onClick={calculateAverageGap}
+        >
+          average gap calcation
+        </button>
+        {averageWordGap}
       </div>
     </div>
   );
