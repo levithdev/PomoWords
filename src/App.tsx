@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import { InputPomodoro } from "./components/InputPomodoro"
 import { ButtonCalculateDiferrence } from "./components/ButtonCalculeteDiferrence"
 import { SessionList } from "./components/SessionList"
@@ -7,14 +6,12 @@ import { ImportExportJson } from "./components/ImportExportJson"
 import { usePomoList } from "./hooks/usePomoList"
 import { countWords } from "./util/countWords"
 import { useImportExportJson } from "./hooks/useImportExportJson"
-
+import { usePomoStats } from "./hooks/usePomoStats"
+import { useState } from "react"
 
 function App() {
   const [beforeText, setBeforeText] = useState("");
   const [afterText, setAfterText] = useState("");
-  const [difference, setDifference] = useState<number | null>(null);
-  const [totalGap, setTotalGap] = useState<number | null>(null);
-  const [averageWordGap, setAverageWordGap] = useState<number | null>(null);
 
   const {
     pomoList,
@@ -35,10 +32,13 @@ function App() {
     exportJSON
   } = useImportExportJson(pomoList, setPomoList);
 
-  useEffect(() => {
-    const gap = pomoList.reduce((acc, pomo) => acc + pomo.wordGap, 0);
-    setTotalGap(gap);
-  }, [pomoList])
+  const {
+    totalGap,
+    averageWordGap,
+    difference,
+    calculateAverageGap,
+    calculateDifference
+  } = usePomoStats(pomoList, afterText, beforeText);
 
 
   const pomoVerification = () => {
@@ -57,23 +57,6 @@ function App() {
 
     savePomo(beforeText, afterText);
   }
-
-  const calculateAverageGap = () => {
-    let average = 0;
-    pomoList.map((item) => {
-      average = average + item.wordGap
-    })
-    if (pomoList.length === 0) return
-
-    average = average / pomoList.length
-    average = Number(average.toFixed(1))
-    setAverageWordGap(average)
-  }
-
-  const calculateDifference = () => {
-    const gap = countWords(afterText) - countWords(beforeText);
-    setDifference(gap);
-  };
 
   const handleEnter = (
     event: React.KeyboardEvent<HTMLInputElement>,
