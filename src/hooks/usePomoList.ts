@@ -3,12 +3,12 @@ import type { Pomo } from "../types/Pomo"
 import { countWords } from "../util/countWords";
 
 export function usePomoList() {
+  const [editingTime, setEditingTime] = useState<number | null>(null)
+  const [newName, setNewName] = useState("")
   const [pomoList, setPomoList] = useState<Pomo[]>(() => {
     const saved = localStorage.getItem("memory");
     return saved ? JSON.parse(saved) : [];
   });
-  const [editingTime, setEditingTime] = useState<number | null>(null)
-  const [newName, setNewName] = useState("")
 
   useEffect(() => {
     localStorage.setItem("memory", JSON.stringify(pomoList))
@@ -59,6 +59,7 @@ export function usePomoList() {
     newName,
     setPomoList,
     setNewName,
+    setEditingTime,
     savePomo,
     deleteSession,
     deleteHistory,

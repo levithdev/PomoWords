@@ -2,11 +2,11 @@ import { useEffect, useState } from "react"
 import { InputPomodoro } from "./components/InputPomodoro"
 import { ButtonCalculateDiferrence } from "./components/ButtonCalculeteDiferrence"
 import { SessionList } from "./components/SessionList"
-import type { Pomo } from "./types/Pomo"
 import { StatsOverview } from "./components/StatsOverview"
 import { ImportExportJson } from "./components/ImportExportJson"
 import { usePomoList } from "./hooks/usePomoList"
 import { countWords } from "./util/countWords"
+import { useImportExportJson } from "./hooks/useImportExportJson"
 
 
 function App() {
@@ -30,53 +30,15 @@ function App() {
     taskInEdit,
   } = usePomoList();
 
+  const {
+    importJSON,
+    exportJSON
+  } = useImportExportJson(pomoList, setPomoList);
+
   useEffect(() => {
     const gap = pomoList.reduce((acc, pomo) => acc + pomo.wordGap, 0);
     setTotalGap(gap);
   }, [pomoList])
-
-  const exportJSON = () => {
-    const jsonString = JSON.stringify(pomoList, null, 2);
-    const blob = new Blob([jsonString], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "dados.json";
-    link.click();
-
-    URL.revokeObjectURL(url);
-  };
-
-  const importJSON = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      try {
-        const result = e.target?.result;
-
-        if (typeof result !== "string") {
-          throw new Error("Invalid file format");
-        }
-
-        const parsedData: Pomo[] = JSON.parse(result);
-
-        if (!Array.isArray(parsedData)) {
-          throw new Error("Invalid JSON structure");
-        }
-
-        setPomoList((prev) => [...prev, ...parsedData]);
-
-      } catch {
-        alert("ERROR! INVALID JSON FILE");
-      }
-    };
-
-    reader.readAsText(file);
-  };
 
 
   const pomoVerification = () => {
