@@ -57,6 +57,7 @@ export function usePomoList() {
     pomoList,
     editingTime,
     newName,
+    setPomoList,
     setNewName,
     savePomo,
     deleteSession,

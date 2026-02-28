@@ -5,28 +5,31 @@ import { SessionList } from "./components/SessionList"
 import type { Pomo } from "./types/Pomo"
 import { StatsOverview } from "./components/StatsOverview"
 import { ImportExportJson } from "./components/ImportExportJson"
+import { usePomoList } from "./hooks/usePomoList"
+import { countWords } from "./util/countWords"
 
 
 function App() {
   const [beforeText, setBeforeText] = useState("");
   const [afterText, setAfterText] = useState("");
   const [difference, setDifference] = useState<number | null>(null);
-  const [editingTime, setEditingTime] = useState<number | null>(null)
-  const [newName, setNewName] = useState("");
   const [totalGap, setTotalGap] = useState<number | null>(null);
   const [averageWordGap, setAverageWordGap] = useState<number | null>(null);
-  const [pomoList, setPomoList] = useState<Pomo[]>(() => {
-    try {
-      const saved = localStorage.getItem("memory");
-      return saved ? (JSON.parse(saved) as Pomo[]) : [];
-    } catch {
-      return []
-    }
-  });
 
-  useEffect(() => {
-    localStorage.setItem("memory", JSON.stringify(pomoList))
-  }, [pomoList]) // usePomoList 
+  const {
+    pomoList,
+    editingTime,
+    newName,
+    setNewName,
+    setPomoList,
+    setEditingTime,
+    savePomo,
+    deleteSession,
+    deleteHistory,
+    rename,
+    taskInEdit,
+  } = usePomoList();
+
   useEffect(() => {
     const gap = pomoList.reduce((acc, pomo) => acc + pomo.wordGap, 0);
     setTotalGap(gap);
@@ -75,27 +78,10 @@ function App() {
     reader.readAsText(file);
   };
 
-  const countWords = (text: string): number => {
-    const trimmed = text.trim();
-    return trimmed === "" ? 0 : trimmed.split(/\s+/).length;
-  }; // countWords 
-  const savePomo = () => {
-    const gap = countWords(afterText) - countWords(beforeText);
-    const numberName = pomoList.length + 1;
-
-    const newPomo: Pomo = {
-      name: "Session " + numberName,
-      beforeText,
-      afterText,
-      wordGap: gap,
-      time: Date.now()
-    };
-    setPomoList((prev) => [...prev, newPomo])
-  } // usePomoList 
 
   const pomoVerification = () => {
     if (pomoList.length === 0) {
-      savePomo()
+      savePomo(beforeText, afterText)
       return
     }
 
@@ -107,7 +93,7 @@ function App() {
 
     if (isEqual) return;
 
-    savePomo();
+    savePomo(beforeText, afterText);
   }
 
   const calculateAverageGap = () => {
@@ -126,29 +112,7 @@ function App() {
     const gap = countWords(afterText) - countWords(beforeText);
     setDifference(gap);
   };
-  const deleteSession = (time: number) => {
-    setPomoList(prev => prev.filter(p => p.time !== time))
-  }; //usePomoList
-  const taskInEdit = (time: number) => {
-    setEditingTime(time)
-  }//usePomoList
 
-  const rename = (time: number) => {
-    setPomoList(prev =>
-      prev.map(pomo =>
-        pomo.time === time
-          ? { ...pomo, name: newName }
-          : pomo
-      ))
-  }//usePomoList
-
-  const deleteHistory = () => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this session?")
-
-    if (confirmDelete) {
-      setPomoList([]) //delete 
-    }
-  }
   const handleEnter = (
     event: React.KeyboardEvent<HTMLInputElement>,
     callback: () => void
