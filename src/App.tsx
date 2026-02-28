@@ -6,6 +6,7 @@ import type { Pomo } from "./types/Pomo"
 import { StatsOverview } from "./components/StatsOverview"
 import { ImportExportJson } from "./components/ImportExportJson"
 
+
 function App() {
   const [beforeText, setBeforeText] = useState("");
   const [afterText, setAfterText] = useState("");
@@ -25,7 +26,7 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("memory", JSON.stringify(pomoList))
-  }, [pomoList])
+  }, [pomoList]) // usePomoList 
   useEffect(() => {
     const gap = pomoList.reduce((acc, pomo) => acc + pomo.wordGap, 0);
     setTotalGap(gap);
@@ -77,7 +78,7 @@ function App() {
   const countWords = (text: string): number => {
     const trimmed = text.trim();
     return trimmed === "" ? 0 : trimmed.split(/\s+/).length;
-  };
+  }; // countWords 
   const savePomo = () => {
     const gap = countWords(afterText) - countWords(beforeText);
     const numberName = pomoList.length + 1;
@@ -90,7 +91,7 @@ function App() {
       time: Date.now()
     };
     setPomoList((prev) => [...prev, newPomo])
-  }
+  } // usePomoList 
 
   const pomoVerification = () => {
     if (pomoList.length === 0) {
@@ -127,10 +128,11 @@ function App() {
   };
   const deleteSession = (time: number) => {
     setPomoList(prev => prev.filter(p => p.time !== time))
-  };
+  }; //usePomoList
   const taskInEdit = (time: number) => {
     setEditingTime(time)
-  }
+  }//usePomoList
+
   const rename = (time: number) => {
     setPomoList(prev =>
       prev.map(pomo =>
@@ -138,7 +140,7 @@ function App() {
           ? { ...pomo, name: newName }
           : pomo
       ))
-  }
+  }//usePomoList
 
   const deleteHistory = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this session?")
