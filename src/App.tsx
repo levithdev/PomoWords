@@ -157,30 +157,23 @@ function App() {
   }
   return (
     <div>
-      <div>
-        <div>
+      <div className="grid grid-cols-2 w-1/2 h-screen " >
+        <div className="flex flex-col p-4 ">
           <InputPomodoro
             text={beforeText}
             onChange={setBeforeText}
           />
-        </div>
-        <div>
           <p>Words: {countWords(beforeText)}</p>
         </div>
-      </div>
 
-      <div>
-        <div>
+        <div className="flex flex-col p-4 ">
           <InputPomodoro
             text={afterText}
             onChange={setAfterText}
           />
-        </div>
-        <div>
           <p>Words: {countWords(afterText)}</p>
         </div>
       </div>
-
       <div>
         <ButtonCalculateDiferrence
           onCalculateDifference={calculateDifference}
