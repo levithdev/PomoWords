@@ -68,46 +68,46 @@ function App() {
   }
   return (
     <div>
-      <div className=" h-screen w-1/2 flex flex-col ">
-        <div className="grid flex-1 grid-cols-2  " >
-          <div className="flex flex-col p-4 ">
-            <InputPomodoro
-              text={beforeText}
-              onChange={setBeforeText}
-            />
-            <p>Words: {countWords(beforeText)}</p>
-          </div>
+      <div className="h-screen w-screen grid grid-cols-2">
+        <div className=" h-screen flex flex-col ">
+          <div className="grid flex-1 grid-cols-2  " >
+            <div className="flex flex-col p-4 ">
+              <InputPomodoro
+                text={beforeText}
+                onChange={setBeforeText}
+              />
+              <p>Words: {countWords(beforeText)}</p>
+            </div>
 
-          <div className="flex flex-col p-4 ">
-            <InputPomodoro
-              text={afterText}
-              onChange={setAfterText}
-            />
-            <p>Words: {countWords(afterText)}</p>
+            <div className="flex flex-col p-4 ">
+              <InputPomodoro
+                text={afterText}
+                onChange={setAfterText}
+              />
+              <p>Words: {countWords(afterText)}</p>
+            </div>
+          </div>
+          <div className="h-[8%] flex justify-center">
+            <div className="flex m-5 ">
+              <ButtonCalculateDiferrence
+                onCalculateDifference={calculateDifference}
+                onPomoVerification={pomoVerification}
+                difference={difference}
+              />
+            </div>
+            <div className="flex m-5">
+              <StatsOverview
+                data={{
+                  pomoList
+                }}
+                actions={{
+                  deleteHistory
+                }}
+              />
+            </div>
           </div>
         </div>
-        <div className="h-[8%] flex justify-center">
-          <div className="flex m-5 ">
-            <ButtonCalculateDiferrence
-              onCalculateDifference={calculateDifference}
-              onPomoVerification={pomoVerification}
-              difference={difference}
-            />
-          </div>
-          <div className="flex m-5">
-            <StatsOverview
-              data={{
-                pomoList
-              }}
-              actions={{
-                deleteHistory
-              }}
-            />
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
+        <div className="h-screen ">
           <SessionList
             data={{
               pomoList,
