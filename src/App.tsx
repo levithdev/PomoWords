@@ -43,7 +43,7 @@ function App() {
 
   const pomoVerification = () => {
     if (pomoList.length === 0) {
-      savePomo(beforeText, afterText)
+      savePomo(afterText, beforeText)
       return
     }
 
@@ -55,7 +55,7 @@ function App() {
 
     if (isEqual) return;
 
-    savePomo(beforeText, afterText);
+    savePomo(afterText, beforeText);
   }
 
   const handleEnter = (
