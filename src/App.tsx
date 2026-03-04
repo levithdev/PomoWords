@@ -68,39 +68,46 @@ function App() {
   }
   return (
     <div>
-      <div>
-        <div>
-          <InputPomodoro
-            text={beforeText}
-            onChange={setBeforeText}
-          />
-        </div>
-        <div>
-          <p>Words: {countWords(beforeText)}</p>
-        </div>
-      </div>
+      <div className="h-screen w-screen grid grid-cols-2">
+        <div className=" h-screen flex flex-col ">
+          <div className="grid flex-1 grid-cols-2  " >
+            <div className="flex flex-col p-4 ">
+              <InputPomodoro
+                text={beforeText}
+                onChange={setBeforeText}
+              />
+              <p>Words: {countWords(beforeText)}</p>
+            </div>
 
-      <div>
-        <div>
-          <InputPomodoro
-            text={afterText}
-            onChange={setAfterText}
-          />
+            <div className="flex flex-col p-4 ">
+              <InputPomodoro
+                text={afterText}
+                onChange={setAfterText}
+              />
+              <p>Words: {countWords(afterText)}</p>
+            </div>
+          </div>
+          <div className="h-[8%] flex justify-center">
+            <div className="flex m-5 ">
+              <ButtonCalculateDiferrence
+                onCalculateDifference={calculateDifference}
+                onPomoVerification={pomoVerification}
+                difference={difference}
+              />
+            </div>
+            <div className="flex m-5">
+              <StatsOverview
+                data={{
+                  pomoList
+                }}
+                actions={{
+                  deleteHistory
+                }}
+              />
+            </div>
+          </div>
         </div>
-        <div>
-          <p>Words: {countWords(afterText)}</p>
-        </div>
-      </div>
-
-      <div>
-        <ButtonCalculateDiferrence
-          onCalculateDifference={calculateDifference}
-          onPomoVerification={pomoVerification}
-          difference={difference}
-        />
-      </div>
-      <div>
-        <div>
+        <div className="h-screen ">
           <SessionList
             data={{
               pomoList,
@@ -115,17 +122,6 @@ function App() {
               setEditingTime,
               handleEnter,
               countWords
-            }}
-          />
-        </div>
-        <div>
-          <StatsOverview
-            data={{
-              pomoList,
-              totalGap
-            }}
-            actions={{
-              deleteHistory
             }}
           />
         </div>
@@ -146,7 +142,11 @@ function App() {
         </button>
         {averageWordGap}
       </div>
+      <div>
+        <p>{totalGap}</p>
+      </div>
     </div>
+
   );
 }
 
