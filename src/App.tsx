@@ -68,29 +68,43 @@ function App() {
   }
   return (
     <div>
-      <div className="grid grid-cols-2 w-1/2 h-screen " >
-        <div className="flex flex-col p-4 ">
-          <InputPomodoro
-            text={beforeText}
-            onChange={setBeforeText}
-          />
-          <p>Words: {countWords(beforeText)}</p>
-        </div>
+      <div className=" h-screen w-1/2 flex flex-col ">
+        <div className="grid flex-1 grid-cols-2  " >
+          <div className="flex flex-col p-4 ">
+            <InputPomodoro
+              text={beforeText}
+              onChange={setBeforeText}
+            />
+            <p>Words: {countWords(beforeText)}</p>
+          </div>
 
-        <div className="flex flex-col p-4 ">
-          <InputPomodoro
-            text={afterText}
-            onChange={setAfterText}
-          />
-          <p>Words: {countWords(afterText)}</p>
+          <div className="flex flex-col p-4 ">
+            <InputPomodoro
+              text={afterText}
+              onChange={setAfterText}
+            />
+            <p>Words: {countWords(afterText)}</p>
+          </div>
         </div>
-      </div>
-      <div>
-        <ButtonCalculateDiferrence
-          onCalculateDifference={calculateDifference}
-          onPomoVerification={pomoVerification}
-          difference={difference}
-        />
+        <div className="h-[8%] flex justify-center">
+          <div className="flex m-5 ">
+            <ButtonCalculateDiferrence
+              onCalculateDifference={calculateDifference}
+              onPomoVerification={pomoVerification}
+              difference={difference}
+            />
+          </div>
+          <div className="flex m-5">
+            <StatsOverview
+              data={{
+                pomoList
+              }}
+              actions={{
+                deleteHistory
+              }}
+            />
+          </div>
+        </div>
       </div>
       <div>
         <div>
@@ -111,17 +125,6 @@ function App() {
             }}
           />
         </div>
-        <div>
-          <StatsOverview
-            data={{
-              pomoList,
-              totalGap
-            }}
-            actions={{
-              deleteHistory
-            }}
-          />
-        </div>
       </div>
       <div>
         <ImportExportJson
@@ -139,7 +142,11 @@ function App() {
         </button>
         {averageWordGap}
       </div>
+      <div>
+        <p>{totalGap}</p>
+      </div>
     </div>
+
   );
 }
 
