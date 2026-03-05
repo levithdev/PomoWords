@@ -33,10 +33,10 @@ function App() {
   } = useImportExportJson(pomoList, setPomoList);
 
   const {
-    totalGap,
-    averageWordGap,
+    // totalGap,
+    // averageWordGap,
     difference,
-    calculateAverageGap,
+    // calculateAverageGap,
     calculateDifference
   } = usePomoStats(pomoList, afterText, beforeText);
 
@@ -67,11 +67,11 @@ function App() {
     }
   }
   return (
-    <div>
-      <div className="h-screen w-screen grid grid-cols-2">
-        <div className=" h-screen flex flex-col ">
-          <div className="grid flex-1 grid-cols-2  " >
-            <div className="flex flex-col p-4 ">
+    <div className="h-screen w-screen grid grid-rows-[1fr_auto]">
+      <div className="grid grid-cols-2 h-full">
+        <div className="h-screen flex flex-col">
+          <div className="grid flex-1 grid-cols-2">
+            <div className="flex flex-col p-4">
               <InputPomodoro
                 text={beforeText}
                 onChange={setBeforeText}
@@ -87,7 +87,7 @@ function App() {
               <p>Words: {countWords(afterText)}</p>
             </div>
           </div>
-          <div className="h-[8%] flex justify-center">
+          <div className="flex justify-center">
             <div className="flex m-5 ">
               <ButtonCalculateDiferrence
                 onCalculateDifference={calculateDifference}
@@ -107,7 +107,7 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="h-screen ">
+        <div>
           <SessionList
             data={{
               pomoList,
@@ -126,26 +126,29 @@ function App() {
           />
         </div>
       </div>
-      <div>
-        <ImportExportJson
-          actions={{
-            exportJSON,
-            importJSON
-          }}
-        />
-      </div>
-      <div>
-        <button
-          onClick={calculateAverageGap}
-        >
-          average gap calcation
-        </button>
-        {averageWordGap}
-      </div>
-      <div>
-        <p>{totalGap}</p>
+      <div className="flex justify-center">
+        <div>
+          <ImportExportJson
+            actions={{
+              exportJSON,
+              importJSON
+            }}
+          />
+        </div>
+        {/* <div>
+            <button
+              onClick={calculateAverageGap}
+            >
+              average gap calcation
+            </button>
+            {averageWordGap}
+          </div>
+          <div>
+            <p>{totalGap}</p>
+          </div> */}
       </div>
     </div>
+
 
   );
 }

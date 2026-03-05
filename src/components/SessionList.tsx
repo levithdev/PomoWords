@@ -22,7 +22,7 @@ export interface SessionListProps {
 const getGapColor = (gap: number) => {
   if (gap < 0) return "text-red-600"
   if (gap === 0) return "text-gray-600"
-  return "text-green-950"
+  return "text-green-400"
 }
 export function SessionList({
   data,
