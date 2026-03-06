@@ -14,20 +14,26 @@ export function ImportExportJson({
   const { exportJSON, importJSON } = actions
 
   return (
-    <div>
-      <div>
+    <div className="flex mt-8 items-center">
+      <div className="m-4">
         <button
+          className="px-2 py-2 bg-slate-600 border rounded-xl border-black "
           onClick={exportJSON}
         >
           Export JSON
         </button>
       </div>
-      <div>
-        <input
-          type="file"
-          accept="application/json"
-          onChange={importJSON}
-        />
+      <div className="m-4">
+        <label className="px-2 py-2 bg-slate-600 border rounded-xl border-black ">
+          import
+          <input
+            type="file"
+            accept="application/json"
+            onChange={importJSON}
+            style={{ display: "none" }}
+          />
+        </label>
+
       </div>
     </div>
   )
