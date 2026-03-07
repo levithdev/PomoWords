@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react"
 import type { Pomo } from "../types/Pomo"
 import { countWords } from "../util/countWords";
+import { subDays, isAfter } from "date-fns";
+import type { FilterType } from "../types/FilterType"
 
 export function usePomoList() {
   const [editingTime, setEditingTime] = useState<number | null>(null)
   const [newName, setNewName] = useState("")
+  const [filterPomoList, setFilterPomoList] = useState<Pomo[]>([])
+  const [filterType, setFilterType] = useState<FilterType>("all")
   const [pomoList, setPomoList] = useState<Pomo[]>(() => {
     const saved = localStorage.getItem("memory");
     return saved ? JSON.parse(saved) : [];
@@ -12,6 +16,9 @@ export function usePomoList() {
 
   useEffect(() => {
     localStorage.setItem("memory", JSON.stringify(pomoList))
+  }, [pomoList])
+  useEffect(() => {
+    setFilterPomoList(pomoList)
   }, [pomoList])
 
   const savePomo = (afterText: string, beforeText: string) => {
@@ -52,11 +59,21 @@ export function usePomoList() {
   const taskInEdit = (time: number) => {
     setEditingTime(time)
   }
+  const filterSevenDays = () => {
+    const sevenDaysago = subDays(new Date(), 7)
+
+    return pomoList.filter((p) =>
+      isAfter(new Date(p.time), sevenDaysago)
+    )
+  }
 
   return {
     pomoList,
     editingTime,
     newName,
+    filterPomoList,
+    filterType,
+    filterSevenDays,
     setPomoList,
     setNewName,
     setEditingTime,
@@ -65,6 +82,9 @@ export function usePomoList() {
     deleteHistory,
     rename,
     taskInEdit,
+    setFilterPomoList,
+    setFilterType,
+
   };
 
 }

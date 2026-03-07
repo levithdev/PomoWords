@@ -2,7 +2,7 @@ import type { Pomo } from "../types/Pomo"
 
 export interface SessionListProps {
   data: {
-    pomoList: Pomo[]
+    filterPomoList: Pomo[]
     editingTime: number | null
     newName: string
   }
@@ -19,17 +19,18 @@ export interface SessionListProps {
     countWords: (text: string) => number
   }
 }
+
 const getGapColor = (gap: number) => {
   if (gap < 0) return "text-red-600"
   if (gap === 0) return "text-gray-600"
   return "text-green-400"
 }
+
 export function SessionList({
   data,
   actions
 }: SessionListProps) {
-
-  const { pomoList, editingTime, newName } = data
+  const { filterPomoList, editingTime, newName } = data
   const {
     setNewName,
     deleteSession,
@@ -43,13 +44,12 @@ export function SessionList({
   return (
     <div>
       <ul>
-        {pomoList.map((pomo) => (
-          <li key={pomo.time} >
+        {filterPomoList.map((pomo) => (
+          <li key={pomo.time}>
             <div className="bg-slate-500 border border-black m-4 rounded-lg flex flex-col justify-between">
               <div className="flex justify-between items-center">
                 {editingTime === pomo.time ? (
                   <input
-                    className=""
                     type="text"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
@@ -63,10 +63,12 @@ export function SessionList({
                   />
                 ) : (
                   <h3
-                    className="text-  xl font-bold"
-                    onClick={() => taskInEdit(pomo.time)}> {pomo.name}</h3>
+                    className="text-xl font-bold"
+                    onClick={() => taskInEdit(pomo.time)}>
+                    {pomo.name}
+                  </h3>
                 )}
-                <div className="flex flex-col ">
+                <div className="flex flex-col">
                   <p className="flex justify-end text-sm">
                     {new Date(pomo.time).toLocaleDateString("pt-BR", {
                       day: "2-digit",
@@ -76,20 +78,15 @@ export function SessionList({
                       minute: "2-digit",
                     })}
                   </p>
-
-
                 </div>
-
               </div>
               <div>
                 <p>Before: {countWords(pomo.beforeText)}</p>
                 <p>After: {countWords(pomo.afterText)}</p>
                 <p className={getGapColor(pomo.wordGap)}>{pomo.wordGap}</p>
               </div>
-              <div className="flex justify-end ">
-                <button
-                  className=""
-                  onClick={() => deleteSession(pomo.time)}>
+              <div className="flex justify-end">
+                <button onClick={() => deleteSession(pomo.time)}>
                   delete
                 </button>
               </div>
@@ -97,6 +94,6 @@ export function SessionList({
           </li>
         ))}
       </ul>
-    </div >
+    </div>
   )
 }

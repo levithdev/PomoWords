@@ -1,0 +1,1 @@
+export type FilterType = "all" | "7days"
