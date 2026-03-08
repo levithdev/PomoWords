@@ -17,8 +17,8 @@ export function SelectorFilter({ actions }: SelectorFilterProps) {
   return (
     <div>
       <select onChange={handleChange} className="border border-black">
-        <option value="all">all</option>
         <option value="7days">last 7 days</option>
+        <option value="all">all</option>
       </select>
     </div>
   )

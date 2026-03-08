@@ -1,11 +1,10 @@
-
 import { useEffect, useState } from "react"
 import type { Pomo } from "../types/Pomo"
 import { countWords } from "../util/countWords";
 import { useFilterPomoList } from "./useFilterPomoList"
 
 export function usePomoList() {
-  const [editingTime, setEditingTime] = useState<number | null>(null)
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [newName, setNewName] = useState("")
   const [pomoList, setPomoList] = useState<Pomo[]>(() => {
     const saved = localStorage.getItem("memory");
@@ -20,19 +19,19 @@ export function usePomoList() {
 
   const savePomo = (afterText: string, beforeText: string) => {
     const gap = countWords(afterText) - countWords(beforeText);
-    const numberName = pomoList.length + 1;
     const newPomo: Pomo = {
-      name: "Session " + numberName,
+      name: "Session " + (pomoList.length + 1),
       beforeText,
       afterText,
       wordGap: gap,
-      time: Date.now()
+      time: Date.now(),
+      id: crypto.randomUUID()
     };
     setPomoList((prev) => [...prev, newPomo])
   }
 
-  const deleteSession = (time: number) => {
-    setPomoList(prev => prev.filter(p => p.time !== time))
+  const deleteSession = (id: string) => {
+    setPomoList(prev => prev.filter(p => p.id !== id))
   };
 
   const deleteHistory = () => {
@@ -40,22 +39,22 @@ export function usePomoList() {
     if (confirmDelete) setPomoList([])
   }
 
-  const rename = (time: number) => {
+  const rename = (id: string) => {
     setPomoList(prev =>
-      prev.map(pomo => pomo.time === time ? { ...pomo, name: newName } : pomo)
+      prev.map(pomo => pomo.id === id ? { ...pomo, name: newName } : pomo)
     )
   }
 
-  const taskInEdit = (time: number) => setEditingTime(time)
+  const taskInEdit = (id: string) => setEditingId(id)
 
   return {
     pomoList,
-    editingTime,
+    editingId,
     newName,
     ...filter,
     setPomoList,
     setNewName,
-    setEditingTime,
+    setEditingId,
     savePomo,
     deleteSession,
     deleteHistory,

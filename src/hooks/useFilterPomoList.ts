@@ -5,7 +5,7 @@ import { subDays, isAfter } from "date-fns";
 
 export function useFilterPomoList(pomoList: Pomo[]) {
   const [filterPomoList, setFilterPomoList] = useState<Pomo[]>(pomoList)
-  const [filterType, setFilterType] = useState<FilterType>("all")
+  const [filterType, setFilterType] = useState<FilterType>("7days")
 
   useEffect(() => {
     if (filterType === "all") {
