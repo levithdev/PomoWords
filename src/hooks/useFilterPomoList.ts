@@ -13,12 +13,27 @@ export function useFilterPomoList(pomoList: Pomo[]) {
     } else if (filterType === "7days") {
       const sevenDaysAgo = subDays(new Date(), 7)
       setFilterPomoList(pomoList.filter(p => isAfter(new Date(p.time), sevenDaysAgo)))
+    } else if (filterType === "morning") {
+      setFilterPomoList(pomoList.filter(p => {
+        const hour = new Date(p.time).getHours()
+        return hour >= 6 && hour < 12
+      }))
+    } else if (filterType === "afternoon") {
+      setFilterPomoList(pomoList.filter(p => {
+        const hour = new Date(p.time).getHours()
+        return hour >= 12 && hour < 18
+      }))
+    } else if (filterType === "night") {
+      setFilterPomoList(pomoList.filter(p => {
+        const hour = new Date(p.time).getHours()
+        return hour >= 18 && hour < 24
+      }))
     }
-  }, [pomoList, filterType]) // re-filtra sempre que a lista ou o filtro mudar
+  }, [pomoList, filterType])
 
   return {
     filterPomoList,
     filterType,
-    setFilterType, // o componente só precisa chamar isso pra trocar o filtro
+    setFilterType,
   }
 }
