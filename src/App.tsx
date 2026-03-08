@@ -71,12 +71,16 @@ function App() {
       <div className="grid grid-cols-2 h-full">
         <div className="h-screen flex flex-col">
           <div className="grid flex-1 grid-cols-2">
+
             <div className="flex flex-col p-4">
               <InputPomodoro
                 text={beforeText}
                 onChange={setBeforeText}
               />
-              <p>Words: {countWords(beforeText)}</p>
+              <p
+                className="border border-black  border-t-0">
+                Words: {countWords(beforeText)}
+              </p>
             </div>
 
             <div className="flex flex-col p-4 ">
@@ -84,7 +88,9 @@ function App() {
                 text={afterText}
                 onChange={setAfterText}
               />
-              <p>Words: {countWords(afterText)}</p>
+              <p
+                className="border border-black  border-t-0"
+              >Words: {countWords(afterText)}</p>
             </div>
           </div>
           <div className="flex justify-center">
