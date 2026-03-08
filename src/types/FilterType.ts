@@ -1,1 +1,1 @@
-export type FilterType = "all" | "7days"
+export type FilterType = "all" | "7days" | "morning" | "afternoon" | "night"
