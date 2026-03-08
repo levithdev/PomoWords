@@ -35,6 +35,8 @@ function App() {
   const { difference, calculateDifference } = usePomoStats(pomoList, afterText, beforeText)
 
   const pomoVerification = () => {
+    if (afterText.trim().length === 0) return
+
     if (pomoList.length === 0) {
       savePomo(afterText, beforeText)
       return
