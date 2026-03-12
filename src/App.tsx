@@ -9,6 +9,7 @@ import { useImportExportJson } from "./hooks/useImportExportJson"
 import { usePomoStats } from "./hooks/usePomoStats"
 import { useState } from "react"
 import { SelectorFilter } from "./components/SelectorFilter"
+import { OverviewChart } from "./components/OverviewChart"
 
 function App() {
   const [beforeText, setBeforeText] = useState("")
@@ -58,51 +59,51 @@ function App() {
   }
 
   return (
-    <div className="h-screen w-screen grid grid-rows-[1fr_auto]">
-      <div className="grid grid-cols-2 h-full">
-        <div className="h-screen flex flex-col">
-          <div className="grid flex-1 grid-cols-2">
-            <div className="flex flex-col p-4">
-              <InputPomodoro text={beforeText} onChange={setBeforeText} />
-              <p className="border border-black border-t-0">Words: {countWords(beforeText)}</p>
+    <div className="w-screen overflow-y-auto">
+      <div className="h-screen flex flex-col">
+        <div className="grid grid-cols-2 flex-1 overflow-hidden">
+          <div className="flex flex-col">
+            <div className="grid flex-1 grid-cols-2">
+              <div className="flex flex-col p-4">
+                <InputPomodoro text={beforeText} onChange={setBeforeText} />
+                <p className="border border-black border-t-0">Words: {countWords(beforeText)}</p>
+              </div>
+              <div className="flex flex-col p-4">
+                <InputPomodoro text={afterText} onChange={setAfterText} />
+                <p className="border border-black border-t-0">Words: {countWords(afterText)}</p>
+              </div>
             </div>
-            <div className="flex flex-col p-4">
-              <InputPomodoro text={afterText} onChange={setAfterText} />
-              <p className="border border-black border-t-0">Words: {countWords(afterText)}</p>
+            <div className="flex justify-center">
+              <div className="flex m-5">
+                <ButtonCalculateDiferrence
+                  onCalculateDifference={calculateDifference}
+                  onPomoVerification={pomoVerification}
+                  difference={difference}
+                />
+              </div>
+              <div className="flex m-5">
+                <StatsOverview data={{ pomoList }} actions={{ deleteHistory }} />
+              </div>
             </div>
           </div>
-          <div className="flex justify-center">
-            <div className="flex m-5">
-              <ButtonCalculateDiferrence
-                onCalculateDifference={calculateDifference}
-                onPomoVerification={pomoVerification}
-                difference={difference}
-              />
-            </div>
-            <div className="flex m-5">
-              <StatsOverview
-                data={{ pomoList }}
-                actions={{ deleteHistory }}
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <div>
+          <div className="flex flex-col h-full overflow-hidden">
             <SelectorFilter actions={{ setFilterType }} />
-          </div>
-          <div>
-            <SessionList
-              data={{ filterPomoList, editingId, newName }}
-              actions={{ setNewName, deleteSession, rename, taskInEdit, setEditingId, handleEnter, countWords }}
-            />
+            <div className="overflow-y-auto flex-1">
+              <SessionList
+                data={{ filterPomoList, editingId, newName }}
+                actions={{ setNewName, deleteSession, rename, taskInEdit, setEditingId, handleEnter, countWords }}
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div className="flex justify-center">
-        <div>
-          <ImportExportJson actions={{ exportJSON, importJSON }} />
-        </div>
+
+      <div className="w-full px-8 py-6">
+        <OverviewChart />
+      </div>
+
+      <div className="flex justify-center py-4">
+        <ImportExportJson actions={{ exportJSON, importJSON }} />
       </div>
     </div>
   )
