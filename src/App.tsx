@@ -9,7 +9,7 @@ import { useImportExportJson } from "./hooks/useImportExportJson"
 import { usePomoStats } from "./hooks/usePomoStats"
 import { useState } from "react"
 import { SelectorFilter } from "./components/SelectorFilter"
-import { OverviewChart } from "./components/OverviewChart"
+import { OverviewChart } from "./components/charts/OverviewChart"
 
 function App() {
   const [beforeText, setBeforeText] = useState("")
