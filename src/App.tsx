@@ -99,7 +99,7 @@ function App() {
       </div>
 
       <div className="w-full px-8 py-6">
-        <OverviewChart />
+        <OverviewChart data={filterPomoList} />
       </div>
 
       <div className="flex justify-center py-4">
