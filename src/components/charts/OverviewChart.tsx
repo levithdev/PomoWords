@@ -7,13 +7,13 @@ import { AverageGapByDayChart } from "./AverageGapByDayChart"
 import { AveragePomodorosByDayChart } from "./AveragePomodorosByDayChart"
 import { HeatmapChart } from "./HeatmapChart"
 
-
 interface OverviewChartProps {
   data: Pomo[]
 }
 
 export function OverviewChart({ data }: OverviewChartProps) {
   const [chartType, setChartType] = useState<ChartType>("gap-hour")
+
   const charts = {
     "gap-hour": <AverageGapByHourChart data={data} />,
     "gap-day": <AverageGapByDayChart data={data} />,
@@ -22,11 +22,11 @@ export function OverviewChart({ data }: OverviewChartProps) {
   }
 
   return (
-    <div className="flex">
-      <div className="w-[20%]">
+    <div className="flex w-full">
+      <div className="w-[20%] shrink-0">
         <ChartTypeSelector setChart={setChartType} />
       </div>
-      <div>
+      <div className="flex-1 min-w-0">
         {charts[chartType] ?? null}
       </div>
     </div>
