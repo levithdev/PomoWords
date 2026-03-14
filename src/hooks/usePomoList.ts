@@ -35,7 +35,7 @@ export function usePomoList() {
   };
 
   const deleteHistory = () => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this session?")
+    const confirmDelete = window.confirm("Are you sure you want to delete all sessions?")
     if (confirmDelete) setPomoList([])
   }
 
