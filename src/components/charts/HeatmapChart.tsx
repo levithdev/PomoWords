@@ -5,7 +5,7 @@ interface HeatmapChartProps {
   data: Pomo[]
 }
 
-const WEEKS = 26
+const WEEKS = 52
 const CELL = 16
 const GAP = 4
 const DAY_LABEL_WIDTH = 22
