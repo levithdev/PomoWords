@@ -9,23 +9,34 @@ export interface StatsOverviewProps {
   }
 }
 
-export function StatsOverview({
-  data,
-  actions
-}: StatsOverviewProps) {
-
+export function StatsOverview({ data, actions }: StatsOverviewProps) {
   const { pomoList } = data
   const { deleteHistory } = actions
-
 
   return (
     <div>
       {pomoList.length !== 0 && (
         <button
-          className="border border-black rounded-lg min-h-10 pr-2 pl-2 min-w-16"
-          onClick={deleteHistory}>
+          onClick={deleteHistory}
+          style={{
+            background: "transparent",
+            border: "1px solid rgba(239,68,68,0.25)",
+            borderRadius: 8,
+            color: "#F87171",
+            fontSize: 13,
+            fontWeight: 500,
+            padding: "8px 16px",
+            cursor: "pointer",
+            minWidth: 64,
+            minHeight: 40,
+            transition: "background 0.15s, border-color 0.15s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.08)")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+        >
           Clear History
-        </button>)}
+        </button>
+      )}
     </div>
   )
 }
