@@ -30,7 +30,7 @@ function App() {
     setFilterType,
   } = usePomoList()
   const { importJSON, exportJSON } = useImportExportJson(pomoList, setPomoList)
-  const { difference, calculateDifference } = usePomoStats(pomoList, afterText, beforeText)
+  const { difference, calculateDifference } = usePomoStats(afterText, beforeText)
 
   const pomoVerification = () => {
     if (afterText.trim().length === 0) return
