@@ -62,7 +62,6 @@ export function AveragePomodorosByDayChart({ data }: AveragePomodorosByDayChartP
           dataKey="pomos"
           fill="#378ADD"
           radius={[4, 4, 0, 0]}
-          background={{ fill: "rgba(55,138,221,0.06)" }}
         />
       </BarChart>
     </ResponsiveContainer>
