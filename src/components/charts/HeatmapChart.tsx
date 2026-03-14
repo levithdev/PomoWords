@@ -75,7 +75,7 @@ function formatDate(date: Date) {
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
 }
 
-type TooltipState = { x: number; y: number; cell: HeatmapCell }
+type TooltipState = { cellX: number; cellY: number; cell: HeatmapCell }
 
 export function HeatmapChart({ data }: HeatmapChartProps) {
   const cells = buildHeatmapData(data)
@@ -87,6 +87,11 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
 
   const svgWidth = DAY_LABEL_WIDTH + WEEKS * (CELL + GAP)
   const svgHeight = HEADER + 7 * (CELL + GAP)
+
+  const BOX_W = 148
+  const BOX_H_DATA = 54
+  const BOX_H_EMPTY = 34
+  const BOX_OFFSET = 6
 
   const weekHeaders = Array.from({ length: WEEKS }, (_, w) => {
     const sunday = cells[w * 7].date
@@ -100,7 +105,7 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
     <div style={{ overflowX: "auto" }}>
       <svg width={svgWidth} height={svgHeight} style={{ display: "block", overflow: "visible" }}>
 
-        {/* Month + week number headers */}
+        {/* Header */}
         {weekHeaders.map((wh, w) => {
           const x = DAY_LABEL_WIDTH + w * (CELL + GAP)
           return (
@@ -157,7 +162,7 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
                 ry={3}
                 fill={COLORS[cell.level]}
                 style={{ cursor: "pointer" }}
-                onMouseEnter={() => setTooltip({ x, y, cell })}
+                onMouseEnter={() => setTooltip({ cellX: x, cellY: y, cell })}
                 onMouseLeave={() => setTooltip(null)}
               />
               {isToday && (
@@ -180,10 +185,13 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
 
         {/* Tooltip */}
         {tooltip && (() => {
-          const BOX_W = 148
-          const BOX_H = tooltip.cell.pomos > 0 ? 54 : 34
-          const bx = Math.min(Math.max(tooltip.x - BOX_W / 2, 0), svgWidth - BOX_W)
-          const by = tooltip.y - BOX_H - 6
+          const hasData = tooltip.cell.pomos > 0
+          const BOX_H = hasData ? BOX_H_DATA : BOX_H_EMPTY
+          const bx = Math.min(Math.max(tooltip.cellX - BOX_W / 2, 0), svgWidth - BOX_W)
+          const showBelow = tooltip.cellY - BOX_H - BOX_OFFSET < HEADER
+          const by = showBelow
+            ? tooltip.cellY + CELL + BOX_OFFSET
+            : tooltip.cellY - BOX_H - BOX_OFFSET
 
           return (
             <g style={{ pointerEvents: "none" }}>
@@ -191,7 +199,7 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
               <text x={bx + 8} y={by + 14} fontSize={10} fill="#B5D4F4" fontFamily="inherit">
                 {formatDate(tooltip.cell.date)}
               </text>
-              {tooltip.cell.pomos > 0 ? (
+              {hasData ? (
                 <>
                   <text x={bx + 8} y={by + 30} fontSize={10} fill="#fff" fontFamily="inherit" fontWeight="500">
                     {`${tooltip.cell.pomos} pomo${tooltip.cell.pomos > 1 ? "s" : ""} · avg ${tooltip.cell.avgGap} words`}
