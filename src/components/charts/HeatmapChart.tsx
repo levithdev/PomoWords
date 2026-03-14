@@ -115,16 +115,18 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
                   {MONTH_NAMES[wh.month]}
                 </text>
               )}
-              <text
-                x={x + CELL / 2}
-                y={HEADER - 2}
-                fontSize={8}
-                fill="#555555"
-                fontFamily="inherit"
-                textAnchor="middle"
-              >
-                {wh.weekNum}
-              </text>
+              {wh.weekNum % 2 === 0 && (
+                <text
+                  x={x + CELL / 2}
+                  y={HEADER - 2}
+                  fontSize={8}
+                  fill="#555555"
+                  fontFamily="inherit"
+                  textAnchor="middle"
+                >
+                  {wh.weekNum}
+                </text>
+              )}
             </g>
           )
         })}
